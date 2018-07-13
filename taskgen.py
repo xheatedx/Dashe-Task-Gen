@@ -107,6 +107,12 @@ for i in range(0,maxtasks):
     else:
         task.update({"site":site})
     task.update({"size":getSize()})
+    for site in sites:
+        if "Undefeated" in site:
+            useAccount = True
+            continue
+        else:
+            useAccount = False
     task.update({"useAccount":useAccount})
     task.update({"username":getLogin()["username"]})
     tasks.append(task.copy())
