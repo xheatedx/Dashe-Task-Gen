@@ -1,4 +1,4 @@
-import requests, json
+import json
 
 global profile_list
 profile_list = []
