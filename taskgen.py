@@ -13,26 +13,16 @@ with open("logins_undftd.txt","r") as file:
         login.update({"username":line.split(":")[0]})
         login.update({"password":line.split(":")[1][:-1]})
         logins_undftd.append(login.copy())
-def getLogin():
-    l = logins_undftd[0]
-    logins_undftd.append(logins_undftd[0])
-    logins_undftd.pop(0)
-    return l
 global size_list
 size_list = []
 with open("sizes.txt","r") as file:
     for line in file:
         size_list.append(line[:-1])
-def getSize():
-    size = size_list[0]
-    size_list.append(size_list[0])
-    size_list.pop(0)
-    return size
-def getProfile():
-    p = profile_list[0]
-    profile_list.append(profile_list[0])
-    profile_list.pop(0)
-    return p
+def listCycle(list0):
+    q = list0[0]
+    list0.append(list0[0])
+    list0.pop(0)
+    return q
 site = raw_input('''
 ################################### ~ CHOOSE A SITE BY ENTERING SITE NAME EXACTLY AS SHOWN BELOWN ~ #################################################
 
@@ -64,11 +54,6 @@ sites = []
 for site in site_list:
     for i in range(0,len(size_list)):
         sites.append(site)
-def getSite():
-    s = sites[0]
-    sites.append(sites[0])
-    sites.pop(0)
-    return s
 maxtasks = raw_input("How many tasks? >>")
 maxtasks = int(maxtasks)
 captcha = raw_input('''
@@ -98,15 +83,15 @@ for i in range(0,maxtasks):
     task.update({"monitorInput":keywords})
     task.update({"monitorType":"keywords"})
     task.update({"newProductsOnly":False})
-    task.update({"password":getLogin()["password"]})
-    task.update({"profile":getProfile()})
+    task.update({"password":listCycle(logins_undftd)["password"]})
+    task.update({"profile":listCycle(profile_list)})
     task.update({"scheduleTask":False})
     task.update({"scheduleTime":""})
     if len(site_list) > 1:
-        task.update({"site":getSite()})
+        task.update({"site":listCycle(sites)})
     else:
         task.update({"site":site})
-    task.update({"size":getSize()})
+    task.update({"size":listCycle(size_list)})
     for site in sites:
         if "Undefeated" in site:
             useAccount = True
@@ -114,11 +99,8 @@ for i in range(0,maxtasks):
         else:
             useAccount = False
     task.update({"useAccount":useAccount})
-    task.update({"username":getLogin()["username"]})
+    task.update({"username":listCycle(logins_undftd)["username"]})
     tasks.append(task.copy())
-    print task
-    print tasks
-    print
     count = count + 1
 with open("Generated Tasks.json","w") as file:
     json.dump(tasks,file)
